@@ -12,6 +12,7 @@ def process_html():
         return
 
     # Get user-provided UTM parameters
+    utm_unit= unit.get()
     utm_campaign = utm_campaign_entry.get()
     utm_source = utm_source_entry.get()
     utm_medium = utm_medium_entry.get()
@@ -25,9 +26,10 @@ def process_html():
     # Iterate through all anchor tags ('a') in the HTML
     for link in soup.findAll('a'):
         href = link.get('href')
+        content = link.get(content)
         if href:
             # Append UTM parameters to the hyperlink
-            query_string = f"utm_campaign={utm_campaign}&utm_source={utm_source}&utm_medium={utm_medium}&utm_content={utm_content}"
+            query_string = f"utm_campaign={utm_unit + '-2023-2024-'}{utm_campaign}&utm_source={utm_source}&utm_medium={utm_medium}&utm_content={content}"
             new_href = f"{href}?{query_string}"
             link['href'] = new_href
 
@@ -42,10 +44,26 @@ root = tk.Tk()
 root.title("HTML Link Modifier with UTM Parameters")
 
 # Create entry fields for UTM parameters
+utm_unit_label = tk.Label(root, text="UTM Unit:")
+utm_unit_label.pack()
+
+# define list of business units
+units = ["adms", "fye", "schol"]
+
+# converts the picklist value to a string I guess?
+# and sets the default unit on the picklist
+unit = tk.StringVar(root)
+unit.set("adms")
+
+utm_campaign_unit = tk.OptionMenu(root, unit, *units)
+utm_campaign_unit.pack()
+
+# Create entry fields for UTM parameters
 utm_campaign_label = tk.Label(root, text="UTM Campaign:")
 utm_campaign_label.pack()
 utm_campaign_entry = tk.Entry(root)
 utm_campaign_entry.pack()
+
 
 utm_source_label = tk.Label(root, text="UTM Source:")
 utm_source_label.pack()
