@@ -1,9 +1,11 @@
 #adding a comment mostly just to see if a git commit works!
 
+#importing libraries
 import tkinter as tk
 from tkinter import filedialog
 from bs4 import BeautifulSoup
 
+#read the HTML source file
 def process_html():
     file_path = filedialog.askopenfilename(filetypes=[("HTML files", "*.html")])
     if not file_path:
