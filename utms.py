@@ -15,8 +15,6 @@ def process_html():
     utm_unit= unit.get()
     utm_campaign = utm_campaign_entry.get()
     utm_source = utm_source_entry.get()
-    utm_medium = utm_medium_entry.get()
-    utm_content = utm_content_entry.get()
 
     with open(file_path, 'r') as file:
         html_content = file.read()
@@ -26,10 +24,10 @@ def process_html():
     # Iterate through all anchor tags ('a') in the HTML
     for link in soup.findAll('a'):
         href = link.get('href')
-        content = link.get(content)
+        content = str(link.contents[0]).replace(" ", "-").lower()
         if href:
             # Append UTM parameters to the hyperlink
-            query_string = f"utm_campaign={utm_unit + '-2023-2024-'}{utm_campaign}&utm_source={utm_source}&utm_medium={utm_medium}&utm_content={content}"
+            query_string = f"utm_campaign={utm_unit + '-2023-2024-'}{utm_campaign}&utm_source={utm_source}&utm_medium=email&utm_content={content}"
             new_href = f"{href}?{query_string}"
             link['href'] = new_href
 
@@ -37,7 +35,7 @@ def process_html():
     save_path = filedialog.asksaveasfilename(defaultextension=".html", filetypes=[("HTML files", "*.html")])
     if save_path:
         with open(save_path, 'w') as save_file:
-            save_file.write(soup.prettify())
+            save_file.write(str(soup))
 
 # Create the main window
 root = tk.Tk()
@@ -69,16 +67,6 @@ utm_source_label = tk.Label(root, text="UTM Source:")
 utm_source_label.pack()
 utm_source_entry = tk.Entry(root)
 utm_source_entry.pack()
-
-utm_medium_label = tk.Label(root, text="UTM Medium:")
-utm_medium_label.pack()
-utm_medium_entry = tk.Entry(root)
-utm_medium_entry.pack()
-
-utm_content_label = tk.Label(root, text="UTM Content:")
-utm_content_label.pack()
-utm_content_entry = tk.Entry(root)
-utm_content_entry.pack()
 
 # Create a button to select the HTML file
 select_button = tk.Button(root, text="Select HTML File", command=process_html)
