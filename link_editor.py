@@ -3,7 +3,6 @@
 #importing libraries
 import tkinter as tk
 from tkinter import filedialog
-from bs4 import BeautifulSoup
 
 #read the HTML source file
 def process_html():
@@ -17,25 +16,35 @@ def process_html():
     utm_source = utm_source_entry.get()
 
     with open(file_path, 'r') as file:
-        html_content = file.read()
 
-    soup = BeautifulSoup(html_content, 'html.parser')
+        base_url = ""
+        new_body_html = ""
+        in_file_body = False
 
-    # Iterate through all anchor tags ('a') in the HTML
-    for link in soup.findAll('a'):
-        href = link.get('href')
-        content = str(link.contents[0]).replace(" ", "-").lower()
-        if href:
-            # Append UTM parameters to the hyperlink
-            query_string = f"utm_campaign={utm_unit + '-2023-2024-'}{utm_campaign}&utm_source={utm_source}&utm_medium=email&utm_content={content}"
-            new_href = f"{href}?{query_string}"
-            link['href'] = new_href
+        if utm_unit == "adms":
+            base_url = "admissions.indiana.edu"
+        elif utm_unit == "fye":
+            base_url = "fye.indiana.edu"
+        elif utm_unit == "schol":
+            base_url = "scholarships.indiana.edu"
+
+        for line in file:
+            if "<!-- Begin main content area -->" in line:
+                in_file_body = True
+                while in_file_body == True and "<!-- End: main content area -->" not in line:
+                    new_body_html += line
+                    print(new_body_html)
+
+        for line in new_body_html:
+            if base_url in line:
+                print(line.strip('\t, " "') + "\n")
+                new_html + line
 
     # Save the modified HTML to a new file
     save_path = filedialog.asksaveasfilename(defaultextension=".html", filetypes=[("HTML files", "*.html")])
     if save_path:
         with open(save_path, 'w') as save_file:
-            save_file.write(str(soup))
+            save_file.write(new_body_html)
 
 # Create the main window
 root = tk.Tk()

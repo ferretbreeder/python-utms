@@ -1,0 +1,15 @@
+#importing libraries
+import tkinter as tk
+from tkinter import filedialog
+
+def linkReplacer():
+
+    file_path = filedialog.askopenfilename(filetypes=[("HTML files", "*.html")])
+
+    with open(file_path, 'r') as file:
+
+        for line in file:
+            if "admissions.indiana.edu" in line:
+                print(line.strip('\t, " "') + "\n")
+
+linkReplacer()
