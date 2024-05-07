@@ -18,8 +18,7 @@ def process_html():
     with open(file_path, 'r') as file:
 
         base_url = ""
-        new_body_html = ""
-        in_file_body = False
+        links = []
 
         if utm_unit == "adms":
             base_url = "admissions.indiana.edu"
@@ -29,22 +28,15 @@ def process_html():
             base_url = "scholarships.indiana.edu"
 
         for line in file:
-            if "<!-- Begin main content area -->" in line:
-                in_file_body = True
-                while in_file_body == True and "<!-- End: main content area -->" not in line:
-                    new_body_html += line
-                    print(new_body_html)
-
-        for line in new_body_html:
             if base_url in line:
                 print(line.strip('\t, " "') + "\n")
-                new_html + line
+                links.append(line)
 
     # Save the modified HTML to a new file
     save_path = filedialog.asksaveasfilename(defaultextension=".html", filetypes=[("HTML files", "*.html")])
     if save_path:
         with open(save_path, 'w') as save_file:
-            save_file.write(new_body_html)
+            save_file.write(links[0] + '\n' + links[1] + '\n' + links[2])
 
 # Create the main window
 root = tk.Tk()
