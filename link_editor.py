@@ -1,6 +1,7 @@
 #adding a comment mostly just to see if a git commit works!
 
 #importing libraries
+import urllib
 import tkinter as tk
 from tkinter import filedialog
 
@@ -18,7 +19,7 @@ def process_html():
     with open(file_path, 'r') as file:
 
         base_url = ""
-        links = []
+        new_html = ""
 
         if utm_unit == "adms":
             base_url = "admissions.indiana.edu"
@@ -29,14 +30,15 @@ def process_html():
 
         for line in file:
             if base_url in line:
-                print(line.strip('\t, " "') + "\n")
-                links.append(line)
+                new_html += "<span style=\"color:#990000;\">" + line + "</span>"
+            else:
+                new_html += line
 
     # Save the modified HTML to a new file
     save_path = filedialog.asksaveasfilename(defaultextension=".html", filetypes=[("HTML files", "*.html")])
     if save_path:
         with open(save_path, 'w') as save_file:
-            save_file.write(links[0] + '\n' + links[1] + '\n' + links[2])
+            save_file.write(new_html)
 
 # Create the main window
 root = tk.Tk()
