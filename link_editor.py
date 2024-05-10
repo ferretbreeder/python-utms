@@ -2,6 +2,7 @@
 
 #importing libraries
 import urllib
+import re
 import tkinter as tk
 from tkinter import filedialog
 
@@ -18,6 +19,16 @@ def process_html():
 
     with open(file_path, 'r') as file:
 
+        # generate iterable content for the rest of the function
+        old_html = file.read()
+
+        # creates variables to hold the content that comes both before and after the content to be updated and stores that content in those variables
+        old_html_head = old_html.split("<!-- Begin main content area -->")[0] + "<!-- Begin main content area -->"
+        old_html_foot = "<!-- End: main content area -->" + old_html.split("<!-- Begin main content area -->")[1].split("<!-- End: main content area -->")[1]
+
+        # creates the variable that will hold the lines of HTML that need to be searched/updated and stores that content here
+        working_html = old_html.split("<!-- Begin main content area -->")[1].split("<!-- End: main content area -->")[0]
+
         base_url = ""
         new_html = ""
 
@@ -28,17 +39,23 @@ def process_html():
         elif utm_unit == "schol":
             base_url = "scholarships.indiana.edu"
 
-        for line in file:
-            if base_url in line:
-                new_html += "<span style=\"color:#990000;\">" + line + "</span>"
-            else:
-                new_html += line
+        replace_links = re.findall(r'(https?://\S+)', str(working_html))
+
+        utm_links = []
+
+        for url in replace_links:
+            if base_url in url:
+                naked_url = url.strip("\"")
+                print(naked_url + "?utm_campaign=" + utm_unit + "-2023-2024-" + utm_campaign + "&utm_source=" + utm_source + "&utm_medium=email")
+                utm_links.append((naked_url + "?utm_campaign=" + utm_unit + "-2023-2024-" + utm_campaign + "&utm_source=" + utm_source + "&utm_medium=email"))
+
+        print(utm_links)
 
     # Save the modified HTML to a new file
     save_path = filedialog.asksaveasfilename(defaultextension=".html", filetypes=[("HTML files", "*.html")])
     if save_path:
         with open(save_path, 'w') as save_file:
-            save_file.write(new_html)
+            save_file.write(old_html_head + working_html + old_html_foot)
 
 # Create the main window
 root = tk.Tk()
