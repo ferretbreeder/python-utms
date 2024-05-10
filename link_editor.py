@@ -9,7 +9,7 @@ def mail_tel_img_link_remover(links):
     storage_list =[]
 
     for link in links:
-        if "mailto:" not in link and ".png" not in link and ".tel" not in link and ".jpg" not in link:
+        if "mailto:" not in link and ".png" not in link and ".tel" not in link and ".jpg" not in link and 'https://one.iu.edu' not in link:
             storage_list.append(link)
 
     return storage_list
@@ -22,6 +22,7 @@ def content_grabber(html):
 
     for link in soup.findAll('a'):
         href = link.get('href')
+        print(str(link.contents))
         link_content_list.append(str(link.contents[0]).replace(" ", "-").lower())
     
     return link_content_list
@@ -102,6 +103,9 @@ def process_html():
                 working_utm_links.append((url + "?utm_campaign=" + utm_unit + "-2023-2024-" + utm_campaign + "&utm_source=" + utm_source + "&utm_medium=email"))
         
         final_utm_links = utm_content_appender(working_utm_links, content_grabber(working_html))
+
+        print(final_replace_links)
+        print(final_utm_links)
 
         final_body_html = HTML_link_replacer(working_html, final_replace_links, final_utm_links)
 
