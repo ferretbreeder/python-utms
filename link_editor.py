@@ -6,17 +6,13 @@ from bs4 import BeautifulSoup
 
 def mail_tel_img_link_remover(links):
 
-    for link in links:
-        if "mailto:" in link:
-            links.remove(link)
-        elif "tel:" in link:
-            links.remove(link)
-        elif ".jpg" in link:
-            links.remove(link)
-        elif ".png" in link:
-            links.remove(link)
+    storage_list =[]
 
-    return links
+    for link in links:
+        if "mailto:" not in link and ".png" not in link and ".tel" not in link and ".jpg" not in link:
+            storage_list.append(link)
+
+    return storage_list
 
 # a function that takes some HTML and returns a list of all of the text that's inside a set of <a> tags, formatted for a UTM query string
 def content_grabber(html):
@@ -45,9 +41,7 @@ def HTML_link_replacer(html, original_link_list, new_link_list):
     i = 0
 
     for link in original_link_list:
-        print(original_link_list[i])
-        print(new_link_list[i])
-        html.replace(original_link_list[i], new_link_list[i])
+        html = html.replace(original_link_list[i], new_link_list[i])
         i += 1
 
     return html
@@ -97,13 +91,7 @@ def process_html():
 
         working_replace_links = quote_stripper(re.findall(r'(https?://\S+)', str(working_html)))
 
-        print(working_replace_links)
-
         final_replace_links = mail_tel_img_link_remover(working_replace_links)
-
-        print(working_replace_links)
-
-        print(final_replace_links)
 
         content_grabber(working_html)
 
