@@ -1,12 +1,68 @@
-#adding a comment mostly just to see if a git commit works!
-
 #importing libraries
-import urllib
 import re
 import tkinter as tk
 from tkinter import filedialog
+from bs4 import BeautifulSoup
 
-#read the HTML source file
+def mail_tel_img_link_remover(links):
+
+    for link in links:
+        if "mailto:" in link:
+            links.remove(link)
+        elif "tel:" in link:
+            links.remove(link)
+        elif ".jpg" in link:
+            links.remove(link)
+        elif ".png" in link:
+            links.remove(link)
+
+    return links
+
+# a function that takes some HTML and returns a list of all of the text that's inside a set of <a> tags, formatted for a UTM query string
+def content_grabber(html):
+
+    soup = BeautifulSoup(html, 'html.parser')
+    link_content_list = []
+
+    for link in soup.findAll('a'):
+        href = link.get('href')
+        link_content_list.append(str(link.contents[0]).replace(" ", "-").lower())
+    
+    return link_content_list
+
+def utm_content_appender(utm_link_list, content_list):
+
+    i = 0
+
+    for link in utm_link_list:
+        utm_link_list[i] = utm_link_list[i] + ("&utm_content=" + content_list[i])
+        i += 1
+
+    return utm_link_list
+
+def HTML_link_replacer(html, original_link_list, new_link_list):
+
+    i = 0
+
+    for link in original_link_list:
+        print(original_link_list[i])
+        print(new_link_list[i])
+        html.replace(original_link_list[i], new_link_list[i])
+        i += 1
+
+    return html
+
+def quote_stripper(links):
+
+    i = 0
+    
+    for link in links:
+        links[i] = link.strip("\"")
+        i += 1
+
+    return links
+
+# read the HTML source file
 def process_html():
     file_path = filedialog.askopenfilename(filetypes=[("HTML files", "*.html")])
     if not file_path:
@@ -39,23 +95,33 @@ def process_html():
         elif utm_unit == "schol":
             base_url = "scholarships.indiana.edu"
 
-        replace_links = re.findall(r'(https?://\S+)', str(working_html))
+        working_replace_links = quote_stripper(re.findall(r'(https?://\S+)', str(working_html)))
 
-        utm_links = []
+        print(working_replace_links)
 
-        for url in replace_links:
+        final_replace_links = mail_tel_img_link_remover(working_replace_links)
+
+        print(working_replace_links)
+
+        print(final_replace_links)
+
+        content_grabber(working_html)
+
+        working_utm_links = []
+
+        for url in final_replace_links:
             if base_url in url:
-                naked_url = url.strip("\"")
-                print(naked_url + "?utm_campaign=" + utm_unit + "-2023-2024-" + utm_campaign + "&utm_source=" + utm_source + "&utm_medium=email")
-                utm_links.append((naked_url + "?utm_campaign=" + utm_unit + "-2023-2024-" + utm_campaign + "&utm_source=" + utm_source + "&utm_medium=email"))
+                working_utm_links.append((url + "?utm_campaign=" + utm_unit + "-2023-2024-" + utm_campaign + "&utm_source=" + utm_source + "&utm_medium=email"))
+        
+        final_utm_links = utm_content_appender(working_utm_links, content_grabber(working_html))
 
-        print(utm_links)
+        final_body_html = HTML_link_replacer(working_html, final_replace_links, final_utm_links)
 
     # Save the modified HTML to a new file
     save_path = filedialog.asksaveasfilename(defaultextension=".html", filetypes=[("HTML files", "*.html")])
     if save_path:
         with open(save_path, 'w') as save_file:
-            save_file.write(old_html_head + working_html + old_html_foot)
+            save_file.write(old_html_head + final_body_html + old_html_foot)
 
 # Create the main window
 root = tk.Tk()
