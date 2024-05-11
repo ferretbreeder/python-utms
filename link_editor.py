@@ -17,6 +17,8 @@ def mail_tel_img_link_remover(links):
 # a function that takes some HTML and returns a list of all of the text that's inside a set of <a> tags, formatted for a UTM query string
 def content_grabber(html):
 
+    i = 0
+
     soup = BeautifulSoup(html, 'html.parser')
     link_content_list = []
 
@@ -96,9 +98,6 @@ def process_html():
         final_utm_links = utm_content_appender(working_utm_links, content_grabber(working_html))
 
         final_body_html = HTML_link_replacer(working_html, final_replace_links, final_utm_links)
-
-        print(final_replace_links)
-        print(final_utm_links)
 
     # Save the modified HTML to a new file
     save_path = filedialog.asksaveasfilename(defaultextension=".html", filetypes=[("HTML files", "*.html")])
