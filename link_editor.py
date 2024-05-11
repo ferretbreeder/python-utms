@@ -9,7 +9,7 @@ def mail_tel_img_link_remover(links):
     storage_list =[]
 
     for link in links:
-        if "mailto:" not in link and ".png" not in link and ".tel" not in link and ".jpg" not in link and 'https://one.iu.edu' not in link:
+        if "mailto:" not in link and ".png" not in link and ".tel" not in link and ".jpg" not in link and 'https://one.iu.edu' not in link and "machform" not in link:
             storage_list.append(link)
 
     return storage_list
@@ -21,10 +21,14 @@ def content_grabber(html):
     link_content_list = []
 
     for link in soup.findAll('a'):
-        href = link.get('href')
-        print(str(link.contents))
-        link_content_list.append(str(link.contents[0]).replace(" ", "-").lower())
-    
+        if "mailto:" not in link['href'] and ".png" not in link['href'] and "tel:" not in link['href'] and ".jpg" not in link['href'] and 'https://one.iu.edu' not in link['href'] and "machform" not in link['href']:
+            if len(link.contents) == 1:
+                link_content_list.append(str(link.contents[0]).replace(" ", "-").lower().strip("\'"))
+            else:
+                link_content_list.append(str(link.contents[2]).strip().replace(" ", "-").lower().strip().strip("\n").strip("\'") + "-button")
+        else:
+            pass
+
     return link_content_list
 
 def utm_content_appender(utm_link_list, content_list):
@@ -80,34 +84,21 @@ def process_html():
         # creates the variable that will hold the lines of HTML that need to be searched/updated and stores that content here
         working_html = old_html.split("<!-- Begin main content area -->")[1].split("<!-- End: main content area -->")[0]
 
-        base_url = ""
-        new_html = ""
-
-        if utm_unit == "adms":
-            base_url = "admissions.indiana.edu"
-        elif utm_unit == "fye":
-            base_url = "fye.indiana.edu"
-        elif utm_unit == "schol":
-            base_url = "scholarships.indiana.edu"
-
         working_replace_links = quote_stripper(re.findall(r'(https?://\S+)', str(working_html)))
 
         final_replace_links = mail_tel_img_link_remover(working_replace_links)
 
-        content_grabber(working_html)
-
         working_utm_links = []
 
         for url in final_replace_links:
-            if base_url in url:
-                working_utm_links.append((url + "?utm_campaign=" + utm_unit + "-2023-2024-" + utm_campaign + "&utm_source=" + utm_source + "&utm_medium=email"))
+            working_utm_links.append((url + "?utm_campaign=" + utm_unit + "-2023-2024-" + utm_campaign + "&utm_source=" + utm_source + "&utm_medium=email"))
         
         final_utm_links = utm_content_appender(working_utm_links, content_grabber(working_html))
 
+        final_body_html = HTML_link_replacer(working_html, final_replace_links, final_utm_links)
+
         print(final_replace_links)
         print(final_utm_links)
-
-        final_body_html = HTML_link_replacer(working_html, final_replace_links, final_utm_links)
 
     # Save the modified HTML to a new file
     save_path = filedialog.asksaveasfilename(defaultextension=".html", filetypes=[("HTML files", "*.html")])
