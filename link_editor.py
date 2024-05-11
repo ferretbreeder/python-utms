@@ -1,10 +1,11 @@
-#adding a comment mostly just to see if a git commit works!
-
 #importing libraries
+import re
 import tkinter as tk
 from tkinter import filedialog
+from bs4 import BeautifulSoup
+from functions import *
 
-#read the HTML source file
+# read the HTML source file
 def process_html():
     file_path = filedialog.askopenfilename(filetypes=[("HTML files", "*.html")])
     if not file_path:
@@ -17,26 +18,34 @@ def process_html():
 
     with open(file_path, 'r') as file:
 
-        base_url = ""
-        links = []
+        # generate iterable content for the rest of the function
+        old_html = file.read()
 
-        if utm_unit == "adms":
-            base_url = "admissions.indiana.edu"
-        elif utm_unit == "fye":
-            base_url = "fye.indiana.edu"
-        elif utm_unit == "schol":
-            base_url = "scholarships.indiana.edu"
+        # creates variables to hold the content that comes both before and after the content to be updated and stores that content in those variables
+        old_html_head = old_html.split("<!-- Begin main content area -->")[0] + "<!-- Begin main content area -->"
+        old_html_foot = "<!-- End: main content area -->" + old_html.split("<!-- Begin main content area -->")[1].split("<!-- End: main content area -->")[1]
 
-        for line in file:
-            if base_url in line:
-                print(line.strip('\t, " "') + "\n")
-                links.append(line)
+        # creates the variable that will hold the lines of HTML that need to be searched/updated and stores that content here
+        working_html = old_html.split("<!-- Begin main content area -->")[1].split("<!-- End: main content area -->")[0]
+
+        working_replace_links = quote_stripper(re.findall(r'(https?://\S+)', str(working_html)))
+
+        final_replace_links = mail_tel_img_link_remover(working_replace_links)
+
+        working_utm_links = []
+
+        for url in final_replace_links:
+            working_utm_links.append((url + "?utm_campaign=" + utm_unit + "-2023-2024-" + utm_campaign + "&utm_source=" + utm_source + "&utm_medium=email"))
+        
+        final_utm_links = utm_content_appender(working_utm_links, content_grabber(working_html))
+
+        final_body_html = HTML_link_replacer(working_html, final_replace_links, final_utm_links)
 
     # Save the modified HTML to a new file
     save_path = filedialog.asksaveasfilename(defaultextension=".html", filetypes=[("HTML files", "*.html")])
     if save_path:
         with open(save_path, 'w') as save_file:
-            save_file.write(links[0] + '\n' + links[1] + '\n' + links[2])
+            save_file.write(old_html_head + final_body_html + old_html_foot)
 
 # Create the main window
 root = tk.Tk()
