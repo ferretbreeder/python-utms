@@ -40,9 +40,6 @@ def process_html():
         
         final_utm_links = utm_content_appender(working_utm_links, content_grabber(working_html))
 
-        print(final_replace_links)
-        print(final_utm_links)
-
         final_body_html = HTML_link_replacer(working_html, final_replace_links, final_utm_links)
 
     # Save the modified HTML to a new file
