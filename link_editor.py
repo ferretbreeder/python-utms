@@ -36,8 +36,12 @@ def process_html():
 
         for url in final_replace_links:
             working_utm_links.append((url + "?utm_campaign=" + utm_unit + "-2023-2024-" + utm_campaign + "&utm_source=" + utm_source + "&utm_medium=email"))
+
         
         final_utm_links = utm_content_appender(working_utm_links, content_grabber(working_html))
+
+        print(final_replace_links)
+        print(final_utm_links)
 
         final_body_html = HTML_link_replacer(working_html, final_replace_links, final_utm_links)
 

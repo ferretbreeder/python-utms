@@ -44,7 +44,7 @@ def HTML_link_replacer(html, original_link_list, new_link_list):
     i = 0
 
     for link in original_link_list:
-        html = html.replace(original_link_list[i], new_link_list[i])
+        html = html.replace('href=\"' + original_link_list[i] + '\"', 'href=\"' + new_link_list[i] + '\"', 1)
         i += 1
 
     return html
