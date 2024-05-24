@@ -1,3 +1,6 @@
+# UTM Linker
+# Licensed with the GNU General Public License version 3 I guess
+
 #importing libraries
 import re
 import tkinter as tk
@@ -28,6 +31,8 @@ def process_html():
         # creates the variable that will hold the lines of HTML that need to be searched/updated and stores that content here
         working_html = old_html.split("<!-- Begin main content area -->")[1].split("<!-- End: main content area -->")[0]
 
+        # builds a list out of all the links in the working HTML string and strips the extra quotation mark that's coming along with them for some reason
+        # hopefully I'll be able to get rid of this function at some point
         working_replace_links = quote_stripper(re.findall(r'(https?://\S+)', str(working_html)))
 
         final_replace_links = mail_tel_img_link_remover(working_replace_links)
@@ -37,9 +42,10 @@ def process_html():
         for url in final_replace_links:
             working_utm_links.append((url + "?utm_campaign=" + utm_unit + "-2024-2025-" + utm_campaign + "&utm_source=" + utm_source + "&utm_medium=email"))
 
-        
+        # create the final list of links with UTMs attached that will be added into the current working HTML string
         final_utm_links = utm_content_appender(working_utm_links, content_grabber(working_html))
-
+        
+        # looks through the working HTML string and replaces the links inside with their corresponding UTM links
         final_body_html = HTML_link_replacer(working_html, final_replace_links, final_utm_links)
 
     # Save the modified HTML to a new file
