@@ -40,7 +40,10 @@ def process_html():
         working_utm_links = []
 
         for url in final_replace_links:
-            working_utm_links.append((url + "?utm_campaign=" + utm_unit + "-2024-2025-" + utm_campaign + "&utm_source=" + utm_source + "&utm_medium=email"))
+            if "?" in url:
+                working_utm_links.append((url + "&utm_campaign=" + utm_unit + "-2024-2025-" + utm_campaign + "&utm_source=" + utm_source + "&utm_medium=email"))
+            else:
+                working_utm_links.append((url + "?utm_campaign=" + utm_unit + "-2024-2025-" + utm_campaign + "&utm_source=" + utm_source + "&utm_medium=email"))
 
         # create the final list of links with UTMs attached that will be added into the current working HTML string
         final_utm_links = utm_content_appender(working_utm_links, content_grabber(working_html))
