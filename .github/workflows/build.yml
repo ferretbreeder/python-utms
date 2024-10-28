@@ -5,6 +5,7 @@ on:
 
 jobs:
   build-windows:
+    permissions: write-all
     runs-on: windows-latest
     steps:
       - name: Checkout
