@@ -19,7 +19,7 @@ jobs:
         run: |
           pip install -r requirements.txt pyinstaller
       - name: Run PyInstaller
-        run: python -m pyinstaller --onefile link_editor.py
+        run: python -m PyInstaller --onefile link_editor.py
       - uses: actions/upload-artifact@v4
         with:
           name: windows_link_editor
