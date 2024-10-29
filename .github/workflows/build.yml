@@ -19,7 +19,7 @@ jobs:
         run: |
           pip install -r requirements.txt pyinstaller
       - name: Run PyInstaller
-        run: python -m PyInstaller -F link_editor.py
+        run: python -m pyinstaller --onefile link_editor.py
       - uses: actions/upload-artifact@v4
         with:
           name: windows_link_editor
@@ -46,5 +46,5 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: dist\link_editor\link_editor.exe
-          asset_name: Python-UTMs-Windows-amd64.exe
+          asset_name: python-utms-windows-amd64.exe
           asset_content_type: application/zip
