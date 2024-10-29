@@ -23,7 +23,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: windows_link_editor
-          path: dist/link_editor.exe
+          path: D:\a\python-utms\python-utms\dist\link_editor.exe
 
       - name: create release
         id: create_release
