@@ -41,10 +41,17 @@ def process_html():
 
         # checks to see if there is an existing query string in the source URL. if so, the UTM parameters are added onto that existing query string rather than added as a new query string
         for url in final_replace_links:
-            if "?" in url:
-                working_utm_links.append((url + "&utm_campaign=" + utm_unit + "-2024-2025-" + utm_campaign + "&utm_source=" + utm_source + "&utm_medium=email"))
+            if "#" in url:
+                anchor = "#" + url.split("#")[1]
+                if "?" in url:
+                    working_utm_links.append((url.split("#")[0] + "&utm_campaign=" + utm_unit + "-2024-2025-" + utm_campaign + "&utm_source=" + utm_source + "&utm_medium=email" + anchor))
+                else:
+                    working_utm_links.append((url.split("#")[0]+ "?utm_campaign=" + utm_unit + "-2024-2025-" + utm_campaign + "&utm_source=" + utm_source + "&utm_medium=email" + anchor))
             else:
-                working_utm_links.append((url + "?utm_campaign=" + utm_unit + "-2024-2025-" + utm_campaign + "&utm_source=" + utm_source + "&utm_medium=email"))
+                if "?" in url:
+                    working_utm_links.append((url + "&utm_campaign=" + utm_unit + "-2024-2025-" + utm_campaign + "&utm_source=" + utm_source + "&utm_medium=email"))
+                else:
+                    working_utm_links.append((url + "?utm_campaign=" + utm_unit + "-2024-2025-" + utm_campaign + "&utm_source=" + utm_source + "&utm_medium=email"))
 
         # create the final list of links with UTMs attached that will be added into the current working HTML string
         final_utm_links = utm_content_appender(working_utm_links, content_grabber(working_html))
