@@ -42,11 +42,13 @@ def process_html():
         # checks to see if there is an existing query string in the source URL. if so, the UTM parameters are added onto that existing query string rather than added as a new query string
         for url in final_replace_links:
             if "#" in url:
-                anchor = "#" + url.split("#")[1]
+                anchor = "#" + url.split("#")[1].split('\"')[0]
+                print(anchor)
                 if "?" in url:
                     working_utm_links.append((url.split("#")[0] + "&utm_campaign=" + utm_unit + "-2024-2025-" + utm_campaign + "&utm_source=" + utm_source + "&utm_medium=email" + anchor))
                 else:
-                    working_utm_links.append((url.split("#")[0]+ "?utm_campaign=" + utm_unit + "-2024-2025-" + utm_campaign + "&utm_source=" + utm_source + "&utm_medium=email" + anchor))
+                    working_utm_links.append((url.split("#")[0] + "?utm_campaign=" + utm_unit + "-2024-2025-" + utm_campaign + "&utm_source=" + utm_source + "&utm_medium=email" + anchor))
+                    print(working_utm_links)
             else:
                 if "?" in url:
                     working_utm_links.append((url + "&utm_campaign=" + utm_unit + "-2024-2025-" + utm_campaign + "&utm_source=" + utm_source + "&utm_medium=email"))

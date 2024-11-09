@@ -5,7 +5,7 @@ def mail_tel_img_link_remover(links):
     storage_list =[]
 
     for link in links:
-        if "mailto:" not in link and ".png" not in link and ".tel" not in link and ".jpg" not in link and 'https://one.iu.edu' not in link and "machform" not in link:
+        if "mailto:" not in link and ".png" not in link and ".tel" not in link and ".jpg" not in link and 'https://one.iu.edu' not in link and 'https://go.iu.edu' not in link and "machform" not in link:
             storage_list.append(link)
 
     return storage_list
