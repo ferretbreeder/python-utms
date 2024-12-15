@@ -1,11 +1,33 @@
-<h1>HTML Email UTM Linker</h1>
+# HTML Email Tracking UTM Creator
 
-<h2>Does what it says on the can!</h2>
+Licensed with GPL v3.0
 
-<p>
-    This program reads an HTML source file and adds UTM tracking query strings to all of the links that need one. The user selects a business unit, inputs a source and campaign name, and the program does the rest. Content will always default to "email" for obvious reasons, and the year will need to be changed manually in the source code when transitioning to a new academic year.
-</p>
+## Does what it says on the can!
 
-<p>
-    The program also reads the text of every hyperlink and sets the utm_content parameter to that text, all lowercase and hyphen-separated. 
-</p>
+NOTE: This is used in a hyper-specific environment by me alone using the HTML formatting used by my team. Obviously I'd be thrilled if you forked it to use in your own work, but as is, it will likely not do much for you. Feel free to reach out to me with any questions you might have.
+
+This program reads an HTML source file and adds UTM tracking query strings to all of the links that need one. The user selects a business unit, inputs a source and campaign name, and the program does the rest. Content will always default to "email" for obvious reasons, and the year will need to be changed manually in the source code when transitioning to a new academic year.
+
+The program also reads the text of every hyperlink and sets the utm_content parameter to that text, all lowercase and hyphen-separated. 
+
+I chose Python simply because that is the language that I am most familiar with, and I've learned a lot over the last few months of working on this! In the future, there are a few features I'd like to implement:
+
+- Functionality that allows it to be used on the "informal" emails meant to mimic emails sent from an individual sometimes sent by my team
+- Filtering that keeps links that don't need to have UTMs added to them from getting them (and saving me from having to delete them :P)
+- A way to keep anchor tags at the end of links so that they function properly without me having to edit anything manually
+- Handling for non-unicode characters (which currently throw an error and keep the program from continuing)
+- A way to update the existing persistent log of UTM links created by my team for documentation purposes
+- Basic error handling/checking
+- Proper tests
+
+As the code might betray, I'm a fairly novice programmer whose biggest project is this very repo. But I welcome feedback/edits, and look forward to seeing how fully-featured I can make this little thing!
+
+## How to run
+
+I have only needed to run this program on Windows and Linux, and currently only a Windows binary is being provided in the releases section. But to run it yourself, the only non-standard library required is BeautifulSoup, which is present in the requirements.txt.
+
+## How to contribute
+
+I know... so little about programming. I'm still figuring out Github, to be honest. As such, I don't have many guidelines for contributing. If you want to help, create a branch and do what you feel needs to be done. If it seems better than what I've got, then we'll get ourselves a stew goin'!
+
+I don't have many opinions on style or etiquette, so just go hog wild.
