@@ -6,6 +6,8 @@ Licensed with GPL v3.0
 
 NOTE: This is used in a hyper-specific environment by me alone using the HTML formatting used by my team. Obviously I'd be thrilled if you forked it to use in your own work, but as is, it will likely not do much for you. Feel free to reach out to me with any questions you might have.
 
+What follows includes some of the aforementioned hyperspecificity:
+
 This program reads an HTML source file and adds UTM tracking query strings to all of the links that need one. The user selects a business unit, inputs a source and campaign name, and the program does the rest. Content will always default to "email" for obvious reasons, and the year will need to be changed manually in the source code when transitioning to a new academic year.
 
 The program also reads the text of every hyperlink and sets the utm_content parameter to that text, all lowercase and hyphen-separated. 
