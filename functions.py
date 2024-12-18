@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+import re
 
 def mail_tel_img_link_remover(links):
 
@@ -21,9 +22,17 @@ def content_grabber(html):
     for link in soup.findAll('a'):
         if "mailto:" not in link['href'] and ".png" not in link['href'] and "tel:" not in link['href'] and ".jpg" not in link['href'] and 'https://one.iu.edu' not in link['href'] and "machform" not in link['href']:
             if len(link.contents) == 1:
-                link_content_list.append(str(link.contents[0]).replace(" ", "-").lower().strip("\'"))
+                dirty_content = str(link.contents[0]).replace(" ", "-").lower().strip("\'")
+                char_regex = re.compile(r'\s*[^a-zA-Z0-9\-]\s*')
+                hypen_content = char_regex.sub('', dirty_content)
+                clean_content = hypen_content.replace('--', '-')
+                link_content_list.append(clean_content)
             else:
-                link_content_list.append(str(link.contents[2]).strip().replace(" ", "-").lower().strip().strip("\n").strip("\'") + "-button")
+                dirty_content = str(link.contents[2]).strip().replace(" ", "-").lower().strip().strip("\n").strip("\'") + "-button"
+                char_regex = re.compile(r'\s*[^a-zA-Z0-9\-]\s*')
+                hypen_content = char_regex.sub('', dirty_content)
+                clean_content = hypen_content.replace('--', '-')
+                link_content_list.append(clean_content)
         else:
             pass
 
