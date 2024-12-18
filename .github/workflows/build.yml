@@ -24,7 +24,6 @@ jobs:
         with:
           name: windows_link_editor
           path: dist\link_editor\link_editor.exe
-          path: dist\link_editor.exe
 
       - name: create release
         id: create_release
