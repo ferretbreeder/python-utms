@@ -23,12 +23,12 @@ def content_grabber(html):
         if "mailto:" not in link['href'] and ".png" not in link['href'] and "tel:" not in link['href'] and ".jpg" not in link['href'] and 'https://one.iu.edu' not in link['href'] and "machform" not in link['href']:
             if len(link.contents) == 1:
                 dirty_content = str(link.contents[0]).replace(" ", "-").lower().strip("\'")
-                regex = re.compile('[^a-zA-Z0-9]')
+                regex = re.compile('[^a-zA-Z0-9\-]')
                 clean_content = regex.sub('', dirty_content)
                 link_content_list.append(clean_content)
             else:
                 dirty_content = str(link.contents[2]).strip().replace(" ", "-").lower().strip().strip("\n").strip("\'") + "-button"
-                regex = re.compile('[^a-zA-Z0-9]')
+                regex = re.compile('[^a-zA-Z0-9\-]')
                 clean_content = regex.sub('', dirty_content)
                 link_content_list.append(clean_content)
         else:
