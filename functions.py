@@ -6,7 +6,9 @@ def link_filter(links):
     storage_list =[]
 
     for link in links:
+        #filter for IU links
         if 'indiana.edu' in link or 'iu.edu' in link:
+            #filter out non-webpage and unnecessary IU links
             if "mailto:" not in link and ".png" not in link and "tel" not in link and ".jpg" not in link and 'https://one.iu.edu' not in link and "machform" not in link:
                 storage_list.append(link)
 
