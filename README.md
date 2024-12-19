@@ -8,7 +8,7 @@ NOTE: This is used in a hyper-specific environment by me alone using the HTML fo
 
 What follows includes some of the aforementioned hyperspecificity:
 
-This program reads an HTML source file and adds UTM tracking query strings to all of the links that need one. The user selects a business unit, inputs a source and campaign name, and the program does the rest. Content will always default to "email" for obvious reasons, and the year will need to be changed manually in the source code when transitioning to a new academic year.
+This program reads an HTML source file and adds UTM tracking query strings to all of the links that need one. The user selects a business unit, inputs a source and campaign name, and the program does the rest. The medium will always default to "email" for obvious reasons, and the year will need to be changed manually in the source code when transitioning to a new academic year.
 
 The program also reads the text of every hyperlink and sets the utm_content parameter to that text, all lowercase and hyphen-separated. 
 
