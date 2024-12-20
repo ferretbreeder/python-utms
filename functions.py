@@ -1,13 +1,16 @@
 from bs4 import BeautifulSoup
 import re
 
-def mail_tel_img_link_remover(links):
+def link_filter(links):
 
     storage_list =[]
 
     for link in links:
-        if "mailto:" not in link and ".png" not in link and ".tel" not in link and ".jpg" not in link and 'https://one.iu.edu' not in link and "machform" not in link:
-            storage_list.append(link)
+        #filter for IU links
+        if 'indiana.edu' in link or 'iu.edu' in link:
+            #filter out non-webpage and unnecessary IU links
+            if "mailto:" not in link and ".png" not in link and "tel" not in link and ".jpg" not in link and 'https://one.iu.edu' not in link and "machform" not in link:
+                storage_list.append(link)
 
     return storage_list
 
@@ -20,21 +23,22 @@ def content_grabber(html):
     link_content_list = []
 
     for link in soup.findAll('a'):
-        if "mailto:" not in link['href'] and ".png" not in link['href'] and "tel:" not in link['href'] and ".jpg" not in link['href'] and 'https://one.iu.edu' not in link['href'] and "machform" not in link['href']:
-            if len(link.contents) == 1:
-                dirty_content = str(link.contents[0]).replace(" ", "-").lower().strip("\'")
-                char_regex = re.compile(r'\s*[^a-zA-Z0-9\-]\s*')
-                hypen_content = char_regex.sub('', dirty_content)
-                clean_content = hypen_content.replace('--', '-')
-                link_content_list.append(clean_content)
+        if 'indiana.edu' in link['href'] or 'iu.edu' in link['href']:
+            if "mailto:" not in link['href'] and ".png" not in link['href'] and "tel:" not in link['href'] and ".jpg" not in link['href'] and 'https://one.iu.edu' not in link['href'] and "machform" not in link['href']:
+                if len(link.contents) == 1:
+                    dirty_content = str(link.contents[0]).replace(" ", "-").lower().strip("\'")
+                    char_regex = re.compile(r'\s*[^a-zA-Z0-9\-]\s*')
+                    hypen_content = char_regex.sub('', dirty_content)
+                    clean_content = hypen_content.replace('--', '-')
+                    link_content_list.append(clean_content)
+                else:
+                    dirty_content = str(link.contents[2]).strip().replace(" ", "-").lower().strip().strip("\n").strip("\'") + "-button"
+                    char_regex = re.compile(r'\s*[^a-zA-Z0-9\-]\s*')
+                    hypen_content = char_regex.sub('', dirty_content)
+                    clean_content = hypen_content.replace('--', '-')
+                    link_content_list.append(clean_content)
             else:
-                dirty_content = str(link.contents[2]).strip().replace(" ", "-").lower().strip().strip("\n").strip("\'") + "-button"
-                char_regex = re.compile(r'\s*[^a-zA-Z0-9\-]\s*')
-                hypen_content = char_regex.sub('', dirty_content)
-                clean_content = hypen_content.replace('--', '-')
-                link_content_list.append(clean_content)
-        else:
-            pass
+                pass
 
     return link_content_list
 
