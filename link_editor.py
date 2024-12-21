@@ -35,7 +35,7 @@ def process_html():
         # hopefully I'll be able to get rid of this function at some point
         working_replace_links = quote_stripper(re.findall(r'(https?://\S+)', str(working_html)))
 
-        final_replace_links = link_filter(working_replace_links)
+        final_replace_links = mail_tel_img_link_remover(working_replace_links)
 
         working_utm_links = []
 
