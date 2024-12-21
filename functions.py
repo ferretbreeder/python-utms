@@ -38,7 +38,22 @@ def content_grabber(html):
                     clean_content = hypen_content.replace('--', '-')
                     link_content_list.append(clean_content)
             else:
-                pass
+                if '#' in link['href']:
+                    url = link['href'].split('#')[0]
+                    anchor = '#' + link['href'].split('#')[1]
+                    dirty_content = str(link.contents[2]).strip().replace(" ", "-").lower().strip().strip("\n").strip("\'") + "-button"
+                    char_regex = re.compile(r'\s*[^a-zA-Z0-9\-]\s*')
+                    hypen_content = char_regex.sub('', dirty_content)
+                    clean_content = hypen_content.replace('--', '-') + anchor
+                    link_content_list.append(clean_content)
+                else:
+                    dirty_content = str(link.contents[2]).strip().replace(" ", "-").lower().strip().strip("\n").strip("\'") + "-button"
+                    char_regex = re.compile(r'\s*[^a-zA-Z0-9\-]\s*')
+                    hypen_content = char_regex.sub('', dirty_content)
+                    clean_content = hypen_content.replace('--', '-')
+                    link_content_list.append(clean_content)
+        else:
+            pass
 
     return link_content_list
 
@@ -71,3 +86,16 @@ def quote_stripper(links):
         i += 1
 
     return links
+
+def anchor_ripper(links):
+
+    final_anchor_links = []
+
+    for link in links:
+        if '#' in link:
+            anchorless_url = link.split('#')[0] + '?' + link.split('?')[1]
+            final_anchor_links.append(anchorless_url)
+        else:
+            final_anchor_links.append(link)
+
+    return final_anchor_links
