@@ -35,7 +35,7 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Build executable
       run: |
-        pyinstaller --onefile link_editor.py
+        pyinstaller --onefile link_editor.py --name utm-link-editor-windows-amd64
     - name: Upload executable
       uses: actions/upload-artifact@v4
       with:
