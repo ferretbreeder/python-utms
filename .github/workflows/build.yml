@@ -40,4 +40,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: utm-link-editor-windows-amd64
-        path: dist/link_editor.exe
+        path: dist/utm-link-editor-windows-amd64.exe
