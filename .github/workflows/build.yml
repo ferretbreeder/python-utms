@@ -36,3 +36,7 @@ jobs:
     - name: Build executable
       run: |
         pyinstaller --onefile link_editor.py
+    - name: Upload executable
+      uses: actions/upload-artifact@v4
+      with:
+        name: utm-link-editor-windows-amd64
