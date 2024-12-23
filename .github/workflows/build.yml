@@ -5,9 +5,9 @@ name: Python executable creation
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "ci_cd" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "ci_cd" ]
 
 permissions:
   contents: read
