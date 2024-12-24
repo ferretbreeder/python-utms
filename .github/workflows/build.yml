@@ -10,7 +10,7 @@ on:
     branches: [ "main" ]
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build:
@@ -26,7 +26,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install flake8 pytest pyinstaller
+        pip install flake8 pytest pyinstaller beautifulsoup4
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
@@ -35,4 +35,31 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Build executable
       run: |
-        pyinstaller --onefile link_editor.py
+        pyinstaller --onefile link_editor.py --name utm-link-editor-windows-amd64
+    - name: Upload executable
+      uses: actions/upload-artifact@v4
+      with:
+        name: utm-link-editor-windows-amd64
+        path: dist/utm-link-editor-windows-amd64.exe
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+      with:
+        tag_name: v0.0.95
+        release_name: Release v0.0.95
+        body: |
+          another test
+        draft: false
+        prerelease: false
+    - name: Upload Release Asset
+      id: upload-release-asset 
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: dist/utm-link-editor-windows-amd64.exe
+        asset_name: utm-link-editor-windows-amd64.exe
+        asset_content_type: application/zip
