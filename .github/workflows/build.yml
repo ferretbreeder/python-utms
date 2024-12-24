@@ -50,7 +50,7 @@ jobs:
         tag_name: ${{ github.ref }}
         release_name: Release ${{ github.ref }}
         body: |
-          a test
+          another test
         draft: false
         prerelease: false
     - name: Upload Release Asset
