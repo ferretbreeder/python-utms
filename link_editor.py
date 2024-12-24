@@ -2,14 +2,16 @@
 # Licensed with the GNU General Public License version 3 I guess
 
 #importing libraries
+import os
 import re
 import tkinter as tk
+import csv
 from tkinter import filedialog
 from bs4 import BeautifulSoup
 from functions import *
 
 # read the HTML source file
-def process_html():
+def main():
     file_path = filedialog.askopenfilename(filetypes=[("HTML files", "*.html")])
     if not file_path:
         return
@@ -35,7 +37,10 @@ def process_html():
         # hopefully I'll be able to get rid of this function at some point
         working_replace_links = quote_stripper(re.findall(r'(https?://\S+)', str(working_html)))
 
+        #puts both of these lists into variables to make them more easily accessible to other functions
         final_replace_links = link_filter(working_replace_links)
+
+        final_utm_content_list = content_grabber(working_html)
 
         working_utm_links = []
 
@@ -47,7 +52,7 @@ def process_html():
                 working_utm_links.append((url + "?utm_campaign=" + utm_unit + "-2024-2025-" + utm_campaign + "&utm_source=" + utm_source + "&utm_medium=email"))
 
         # create the final list of links with UTMs attached that will be added into the current working HTML string
-        final_utm_links = anchor_ripper(utm_content_appender(working_utm_links, content_grabber(working_html)))
+        final_utm_links = anchor_ripper(utm_content_appender(working_utm_links, final_utm_content_list))
         
         # looks through the working HTML string and replaces the links inside with their corresponding UTM links
         final_body_html = HTML_link_replacer(working_html, final_replace_links, final_utm_links)
@@ -57,6 +62,19 @@ def process_html():
     if save_path:
         with open(save_path, 'w') as save_file:
             save_file.write(old_html_head + final_body_html + old_html_foot)
+
+    #write the UTM parameters and links to a CSV file
+    if os.path.isfile("./2024-2025_EMC_HTML_UTM_links.csv") == True:
+        with open('2024-2025_EMC_HTML_UTM_links.csv', 'a', newline='') as file:
+            writer = csv.writer(file)
+            for i in range(len(final_replace_links)):
+                writer.writerow([utm_unit, utm_campaign, final_replace_links[i], utm_source, 'email', final_utm_content_list[i], final_utm_links[i]])
+    else:
+        with open('2024-2025_EMC_HTML_UTM_links.csv', 'w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(["Unit", "Campaign", "URL", "Source", "Medium", "Content", "UTM Link"])
+            for i in range(len(final_replace_links)):
+                writer.writerow([utm_unit, utm_campaign, final_replace_links[i], utm_source, 'email', final_utm_content_list[i], final_utm_links[i]])
     
     working_utm_links = []
     working_replace_links = []
@@ -95,7 +113,7 @@ utm_source_entry = tk.Entry(root)
 utm_source_entry.pack()
 
 # Create a button to select the HTML file
-select_button = tk.Button(root, text="Select HTML File", command=process_html)
+select_button = tk.Button(root, text="Select HTML File", command=main)
 select_button.pack()
 
 # Display a message to guide the user
