@@ -16,7 +16,6 @@ I chose Python simply because that is the language that I am most familiar with,
 
 - Functionality that allows it to be used on the "informal" emails meant to mimic emails sent from an individual sometimes sent by my team
 - Handling for non-unicode characters (which currently throw an error and keep the program from continuing)
-- A way to update the existing persistent log of UTM links created by my team for documentation purposes
 - Basic error handling/checking
 - Proper tests
 
