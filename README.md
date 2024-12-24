@@ -25,7 +25,7 @@ As the code might betray, I'm a fairly novice programmer whose biggest project i
 
 I have only needed to run this program on Windows and Linux, and currently only a Windows binary is being provided in the releases section. But to run it yourself, the only non-standard library required is BeautifulSoup, which is present in the requirements.txt.
 
-The binary is currently compiled manually using PyInstaller with pyinstaller --onefile (at least until I get my github action working again at which point that will run automatically), but of course you can just clone the repo, open link_editor.py in your editor, and run it from there as well.
+The binary is currently compiled manually using PyInstaller with pyinstaller --onefile, but of course you can just clone the repo, open link_editor.py in your editor, and run it from there as well.
 
 ## How to contribute
 
