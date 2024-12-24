@@ -2,6 +2,7 @@
 # Licensed with the GNU General Public License version 3 I guess
 
 #importing libraries
+import os
 import re
 import tkinter as tk
 import csv
@@ -63,11 +64,17 @@ def main():
             save_file.write(old_html_head + final_body_html + old_html_foot)
 
     #write the UTM parameters and links to a CSV file
-    with open('2024-2025_EMC_HTML_UTM_links.csv', 'w', newline='') as file:
-        writer = csv.writer(file)
-        writer.writerow(["Unit", "Campaign", "URL", "Source", "Medium", "Content", "UTM Link"])
-        for i in range(len(final_replace_links)):
-            writer.writerow([utm_unit, utm_campaign, final_replace_links[i], utm_source, 'email', final_utm_content_list[i], final_utm_links[i]])
+    if os.path.isfile("./2024-2025_EMC_HTML_UTM_links.csv") == True:
+        with open('2024-2025_EMC_HTML_UTM_links.csv', 'a', newline='') as file:
+            writer = csv.writer(file)
+            for i in range(len(final_replace_links)):
+                writer.writerow([utm_unit, utm_campaign, final_replace_links[i], utm_source, 'email', final_utm_content_list[i], final_utm_links[i]])
+    else:
+        with open('2024-2025_EMC_HTML_UTM_links.csv', 'w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(["Unit", "Campaign", "URL", "Source", "Medium", "Content", "UTM Link"])
+            for i in range(len(final_replace_links)):
+                writer.writerow([utm_unit, utm_campaign, final_replace_links[i], utm_source, 'email', final_utm_content_list[i], final_utm_links[i]])
     
     working_utm_links = []
     working_replace_links = []
