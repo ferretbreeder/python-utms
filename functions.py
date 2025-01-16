@@ -8,7 +8,7 @@ def link_filter(links):
 
     for link in links:
         #filter for IU links
-        if 'indiana.edu' in link or 'iu.edu' in link:
+        if 'indiana.edu' in link or 'iu.edu' in link or "{{Form-Link}}" in link or "{{Form-Survey-Link}}" in link:
             #filter out non-webpage and unnecessary IU links
             if "mailto:" not in link and ".png" not in link and "tel" not in link and ".jpg" not in link and 'https://one.iu.edu' not in link and "machform" not in link:
                 storage_list.append(link)
@@ -26,7 +26,7 @@ def content_grabber(html):
 
     for link in soup.findAll('a'):
         # filter out the links that don't need to be updated
-        if 'indiana.edu' in link['href'] or 'iu.edu' in link['href']:
+        if 'indiana.edu' in link['href'] or 'iu.edu' in link['href'] or "{{Form-Link}}" in link['href'] or "{{Form-Survey-Link}}" in link['href']:
             if "mailto:" not in link['href'] and ".png" not in link['href'] and "tel:" not in link['href'] and ".jpg" not in link['href'] and 'https://one.iu.edu' not in link['href'] and "machform" not in link['href']:
                 # case if link is not a button
                 # this code chops and screws the content and appends the anchor tag to the end of the content if it exists
