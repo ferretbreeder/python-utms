@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import re
 
+# duplicates content of content_grabber, but is currently used outside of that function to filter the list of original links so that the lengths of the original list of links and the updated list of links matches. Will be implemented into content_grabber in the future.
 def link_filter(links):
 
     storage_list =[]
@@ -18,28 +19,37 @@ def link_filter(links):
 def content_grabber(html):
 
     i = 0
-
+    # create an object from the content of the HTML file
     soup = BeautifulSoup(html, 'html.parser')
+    # initialize an empty list to store the link content values
     link_content_list = []
 
     for link in soup.findAll('a'):
+        # filter out the links that don't need to be updated
         if 'indiana.edu' in link['href'] or 'iu.edu' in link['href']:
             if "mailto:" not in link['href'] and ".png" not in link['href'] and "tel:" not in link['href'] and ".jpg" not in link['href'] and 'https://one.iu.edu' not in link['href'] and "machform" not in link['href']:
+                # case if link is not a button
+                # this code chops and screws the content and appends the anchor tag to the end of the content if it exists
                 if len(link.contents) == 1:
                     if '#' in link['href']:
                         url = link['href'].split('#')[0]
                         anchor = '#' + link['href'].split('#')[1]
                         dirty_content = str(link.contents[0]).replace(" ", "-").lower().strip("\'")
+                        # this regex removes non-alphanum characters from the content
                         char_regex = re.compile(r'\s*[^a-zA-Z0-9\-]\s*')
                         hypen_content = char_regex.sub('', dirty_content)
+                        # cleanup step to remove double hyphens when an illegal character is removed
                         clean_content = hypen_content.replace('--', '-') + anchor
                         link_content_list.append(clean_content)
+                    # does the same as the above for links with no anchor tags
                     else:
                         dirty_content = str(link.contents[0]).strip().replace(" ", "-").lower().strip().strip("\n").strip("\'")
                         char_regex = re.compile(r'\s*[^a-zA-Z0-9\-]\s*')
                         hypen_content = char_regex.sub('', dirty_content)
                         clean_content = hypen_content.replace('--', '-')
                         link_content_list.append(clean_content)
+                # case if link IS a button
+                # rinse and repeat
                 else:
                     if '#' in link['href']:
                         url = link['href'].split('#')[0]
@@ -55,26 +65,12 @@ def content_grabber(html):
                         hypen_content = char_regex.sub('', dirty_content)
                         clean_content = hypen_content.replace('--', '-')
                         link_content_list.append(clean_content)
-                # if '#' in link['href']:
-                #     url = link['href'].split('#')[0]
-                #     anchor = '#' + link['href'].split('#')[1]
-                #     dirty_content = str(link.contents[2]).strip().replace(" ", "-").lower().strip().strip("\n").strip("\'") + "-button"
-                #     char_regex = re.compile(r'\s*[^a-zA-Z0-9\-]\s*')
-                #     hypen_content = char_regex.sub('', dirty_content)
-                #     clean_content = hypen_content.replace('--', '-') + anchor
-                #     link_content_list.append(clean_content)
-                # else:
-                #     print(link.contents)
-                #     dirty_content = str(link.contents[0]).strip().replace(" ", "-").lower().strip().strip("\n").strip("\'") + "-button"
-                #     char_regex = re.compile(r'\s*[^a-zA-Z0-9\-]\s*')
-                #     hypen_content = char_regex.sub('', dirty_content)
-                #     clean_content = hypen_content.replace('--', '-')
-                #     link_content_list.append(clean_content)
         else:
             pass
 
     return link_content_list
 
+# function that takes a list of created UTM links and appends the content values to them to complete the process
 def utm_content_appender(utm_link_list, content_list):
 
     i = 0
@@ -85,6 +81,7 @@ def utm_content_appender(utm_link_list, content_list):
 
     return utm_link_list
 
+# function that goes through the HTML file and replaces the original links with their UTM-laden counterparts
 def HTML_link_replacer(html, original_link_list, new_link_list):
 
     i = 0
@@ -95,6 +92,7 @@ def HTML_link_replacer(html, original_link_list, new_link_list):
 
     return html
 
+# a hopefully soon-to-be-unneeded function that removes the random quotation mark that is coming along with the links out of the HTML file for some reason
 def quote_stripper(links):
 
     i = 0
@@ -105,6 +103,7 @@ def quote_stripper(links):
 
     return links
 
+# a function used to grab the anchor tag content from original links so that it can be appended to the end of the new link
 def anchor_ripper(links):
 
     final_anchor_links = []

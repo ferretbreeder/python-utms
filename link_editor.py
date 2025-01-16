@@ -42,6 +42,7 @@ def main():
 
         final_utm_content_list = content_grabber(working_html)
 
+        # initialize the list that will hold the links with final UTM parameters attached minus the content parameter
         working_utm_links = []
 
         # checks to see if there is an existing query string in the source URL. if so, the UTM parameters are added onto that existing query string rather than added as a new query string
@@ -63,7 +64,7 @@ def main():
         with open(save_path, 'w') as save_file:
             save_file.write(old_html_head + final_body_html + old_html_foot)
 
-    #write the UTM parameters and links to a CSV file
+    # write the UTM parameters and links to a CSV file
     if os.path.isfile("./2024-2025_EMC_HTML_UTM_links.csv") == True:
         with open('2024-2025_EMC_HTML_UTM_links.csv', 'a', newline='') as file:
             writer = csv.writer(file)
@@ -76,6 +77,7 @@ def main():
             for i in range(len(final_replace_links)):
                 writer.writerow([utm_unit, utm_campaign, final_replace_links[i], utm_source, 'email', final_utm_content_list[i], final_utm_links[i]])
     
+    # reset lists so that the program can be run again without restarting
     working_utm_links = []
     working_replace_links = []
     final_replace_links = []
