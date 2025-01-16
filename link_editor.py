@@ -35,7 +35,12 @@ def main():
 
         # builds a list out of all the links in the working HTML string and strips the extra quotation mark that's coming along with them for some reason
         # hopefully I'll be able to get rid of this function at some point
-        working_replace_links = quote_stripper(re.findall(r'(https?://\S+)', str(working_html)))
+        working_replace_links = []
+
+        # grabs all of the links in the working_html
+        soup = BeautifulSoup(working_html, 'html.parser')
+        for link in soup.findAll('a'):
+            working_replace_links.append(link['href'])
 
         #puts both of these lists into variables to make them more easily accessible to other functions
         final_replace_links = link_filter(working_replace_links)
@@ -47,7 +52,7 @@ def main():
 
         # checks to see if there is an existing query string in the source URL. if so, the UTM parameters are added onto that existing query string rather than added as a new query string
         for url in final_replace_links:
-            if "?" in url:
+            if "?" in url or url == "{{Form-Link}}" or url == "{{Form-Survey-Link}}":
                 working_utm_links.append((url + "&utm_campaign=" + utm_unit + "-2024-2025-" + utm_campaign + "&utm_source=" + utm_source + "&utm_medium=email"))
             else:
                 working_utm_links.append((url + "?utm_campaign=" + utm_unit + "-2024-2025-" + utm_campaign + "&utm_source=" + utm_source + "&utm_medium=email"))
