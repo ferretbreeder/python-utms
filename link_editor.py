@@ -97,7 +97,7 @@ utm_unit_label = tk.Label(root, text="UTM Unit:")
 utm_unit_label.pack()
 
 # define list of business units
-units = ["adms", "fye", "schol"]
+units = ["adms", "oep", "schol"]
 
 # converts the picklist value to a string I guess?
 # and sets the default unit on the picklist

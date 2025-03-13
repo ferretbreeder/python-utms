@@ -47,10 +47,10 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
       with:
-        tag_name: v1.1.0
-        release_name: Release v1.1.0
+        tag_name: v1.1.1
+        release_name: Release v1.1.1
         body: |
-          In this update, the program now accounts for Liquid Markup merge fields that are used to dynamically populate hrefs in emails.
+          Just a small update to account for FYE's name change to OEP
         draft: false
         prerelease: false
     - name: Upload Release Asset
