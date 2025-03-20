@@ -41,7 +41,7 @@ def main():
 
             # grabs all of the links in the working_html
             soup = BeautifulSoup(working_html, 'html.parser')
-            for link in soup.findAll('a'):
+            for link in soup.find_all('a'):
                 working_replace_links.append(link['href'])
 
             #puts both of these lists into variables to make them more easily accessible to other functions
@@ -77,7 +77,7 @@ def main():
 
             # grabs all of the links in the email
             soup = BeautifulSoup(old_html, 'html.parser')
-            for link in soup.findAll('a'):
+            for link in soup.find_all('a'):
                 working_replace_links.append(link['href'])
             
             #puts both of these lists into variables to make them more easily accessible to other functions
