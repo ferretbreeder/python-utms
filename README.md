@@ -14,7 +14,6 @@ The program also reads the text of every hyperlink and sets the utm_content para
 
 I chose Python simply because that is the language that I am most familiar with, and I've learned a lot over the last few months of working on this! In the future, there are a few features I'd like to implement:
 
-- Functionality that allows it to be used on the "informal" emails meant to mimic emails sent from an individual sometimes sent by my team
 - Handling for non-unicode characters (which currently throw an error and keep the program from continuing)
 - Basic error handling/checking
 - Proper tests
