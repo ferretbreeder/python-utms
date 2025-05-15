@@ -47,10 +47,10 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
       with:
-        tag_name: v1.2.2
-        release_name: Release v1.2.2
+        tag_name: v1.2.3
+        release_name: Release v1.2.3
         body: |
-          go.iu.edu links will no longer have UTM query strings attached to them.
+          Minor version. Remaining OEM business units have been added to the program.
         draft: false
         prerelease: false
     - name: Upload Release Asset
