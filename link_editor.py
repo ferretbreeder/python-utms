@@ -111,12 +111,12 @@ def main():
 
     # write the UTM parameters and links to a CSV file
     if os.path.isfile("./2024-2025_EMC_HTML_UTM_links.csv") == True:
-        with open('2024-2025_EMC_HTML_UTM_links.csv', 'a', newline='') as file:
+        with open(academic_year_grabber() + '_EMC_HTML_UTM_links.csv', 'a', newline='') as file:
             writer = csv.writer(file)
             for i in range(len(final_replace_links)):
                 writer.writerow([utm_unit, utm_campaign, final_replace_links[i], utm_source, 'email', final_utm_content_list[i], final_utm_links[i]])
     else:
-        with open('2024-2025_EMC_HTML_UTM_links.csv', 'w', newline='') as file:
+        with open(academic_year_grabber() + '_EMC_HTML_UTM_links.csv', 'w', newline='') as file:
             writer = csv.writer(file)
             writer.writerow(["Unit", "Campaign", "URL", "Source", "Medium", "Content", "UTM Link"])
             for i in range(len(final_replace_links)):
