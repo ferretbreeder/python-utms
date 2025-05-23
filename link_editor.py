@@ -55,9 +55,9 @@ def main():
             # checks to see if there is an existing query string in the source URL. if so, the UTM parameters are added onto that existing query string rather than added as a new query string
             for url in final_replace_links:
                 if "?" in url or url == "{{Form-Link}}" or url == "{{Form-Survey-Link}}":
-                    working_utm_links.append((url + "&utm_campaign=" + utm_campaign + "&utm_source=" + utm_unit + "-" + utm_source + "&utm_medium=email"))
+                    working_utm_links.append((url + "&utm_source=" + utm_unit + "-" + utm_source + "&utm_medium=email" + "&utm_campaign=" + utm_campaign))
                 else:
-                    working_utm_links.append((url + "?utm_campaign=" + utm_campaign + "&utm_source=" + utm_unit + "-" + utm_source + "&utm_medium=email"))
+                    working_utm_links.append((url + "?utm_source=" + utm_unit + "-" + utm_source + "&utm_medium=email" + "&utm_campaign=" + utm_campaign))
 
             # create the final list of links with UTMs attached that will be added into the current working HTML string
             final_utm_links = anchor_ripper(utm_content_appender(working_utm_links, final_utm_content_list))
@@ -91,9 +91,9 @@ def main():
             # checks to see if there is an existing query string in the source URL. if so, the UTM parameters are added onto that existing query string rather than added as a new query string
             for url in final_replace_links:
                 if "?" in url or url == "{{Form-Link}}" or url == "{{Form-Survey-Link}}":
-                    working_utm_links.append((url + "&utm_campaign=" + utm_campaign + "&utm_source=" + utm_unit + "-" + utm_source + "&utm_medium=email"))
+                    working_utm_links.append((url + "&utm_source=" + utm_unit + "-" + utm_source + "&utm_medium=email" + "&utm_campaign=" + utm_campaign))
                 else:
-                    working_utm_links.append((url + "?utm_campaign=" + utm_campaign + "&utm_source=" + utm_unit + "-" + utm_source + "&utm_medium=email"))
+                    working_utm_links.append((url + "?utm_source=" + utm_unit + "-" + utm_source + "&utm_medium=email" + "&utm_campaign=" + utm_campaign))
             
             # create the final list of links with UTMs attached that will be added into the current working HTML string
             final_utm_links = anchor_ripper(utm_content_appender(working_utm_links, final_utm_content_list))
