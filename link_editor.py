@@ -110,7 +110,7 @@ def main():
                     save_file.write(final_body_html)
 
     # write the UTM parameters and links to a CSV file
-    if os.path.isfile("./2024-2025_EMC_HTML_UTM_links.csv") == True:
+    if os.path.isfile("./" + academic_year_grabber() +  "_EMC_HTML_UTM_links.csv") == True:
         with open(academic_year_grabber() + '_EMC_HTML_UTM_links.csv', 'a', newline='') as file:
             writer = csv.writer(file)
             for i in range(len(final_replace_links)):
@@ -137,7 +137,7 @@ utm_unit_label = tk.Label(root, text="UTM Unit:")
 utm_unit_label.pack()
 
 # define list of business units
-units = ["adms", "oep", "schol"]
+units = ["adms", "oem", "oep", "osfa", "regr", "schol", "scu"]
 
 # converts the picklist value to a string I guess?
 # and sets the default unit on the picklist
