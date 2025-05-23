@@ -130,7 +130,7 @@ def main():
 
 # Create the main window
 root = tk.Tk()
-root.title("HTML Link Modifier with UTM Parameters")
+root.title("HTML UTM Link Creator")
 
 # Create entry fields for UTM parameters
 utm_unit_label = tk.Label(root, text="UTM Unit:")
@@ -164,7 +164,7 @@ select_button = tk.Button(root, text="Select HTML File", command=main)
 select_button.pack()
 
 # Display a message to guide the user
-message_label = tk.Label(root, text="Choose a file, enter UTM parameters, then click 'Select HTML File' to save the modified HTML.")
+message_label = tk.Label(root, text="Enter UTM parameters, select an HTML file, and then save over the file you chose.")
 message_label.pack()
 
 root.mainloop()
