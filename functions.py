@@ -1,5 +1,15 @@
 from bs4 import BeautifulSoup
+from datetime import date
 import re
+
+def academic_year_grabber():
+
+    current_date_mm_dd = date.today().strftime('%m-%d')
+
+    if current_date_mm_dd <= "06-15":
+        return str((int(date.today().strftime('%Y')) - 1)) + "-" + date.today().strftime('%Y')
+    else:
+        return date.today().strftime('%Y') + "-" + str((int(date.today().strftime('%Y')) + 1))
 
 # duplicates content of content_grabber, but is currently used outside of that function to filter the list of original links so that the lengths of the original list of links and the updated list of links matches. Will be implemented into content_grabber in the future.
 def link_filter(links):
