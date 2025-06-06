@@ -66,10 +66,8 @@ def main():
             final_body_html = HTML_link_replacer(working_html, final_replace_links, final_utm_links)
 
             # Save the modified HTML to a new file
-            save_path = filedialog.asksaveasfilename(defaultextension=".html", filetypes=[("HTML files", "*.html")])
-            if save_path:
-                with open(save_path, 'w') as save_file:
-                    save_file.write(old_html_head + final_body_html + old_html_foot)
+            with open(file_path, 'w') as save_file:
+                save_file.write(old_html_head + final_body_html + old_html_foot)
         
         else:
             # initialize list that will hold links from the email
@@ -104,10 +102,8 @@ def main():
             print(final_body_html)
 
             # Save the modified HTML to a new file
-            save_path = filedialog.asksaveasfilename(defaultextension=".html", filetypes=[("HTML files", "*.html")])
-            if save_path:
-                with open(save_path, 'w') as save_file:
-                    save_file.write(final_body_html)
+            with open(file_path, 'w') as save_file:
+                save_file.write(final_body_html)
 
     # write the UTM parameters and links to a CSV file
     if os.path.isfile("./2024-2025_EMC_HTML_UTM_links.csv") == True:
@@ -130,7 +126,8 @@ def main():
 
 # Create the main window
 root = tk.Tk()
-root.title("HTML UTM Link Creator")
+root.title("OEM HTML UTM Creator")
+root.geometry("600x300")
 
 # Create entry fields for UTM parameters
 utm_unit_label = tk.Label(root, text="UTM Unit:")
