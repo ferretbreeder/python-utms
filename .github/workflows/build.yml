@@ -84,10 +84,15 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
       with:
-        tag_name: v1.3.1
-        release_name: Release v1.3.1
+        tag_name: v2.0.0
+        release_name: Release v2.0.0
         body: |
-          Linux binary
+          ## Changelog
+          - New major version due to new UTM query string format/parameter ordering
+            - New parameter ordering is "?utm_source=&utm_medium=&utm_campaign=&utm_content="
+          - Linux executable is now created as part of the CI/CD process
+          - Saving a file is now automatic. The file is "overwritten" with the changed URLs rather than prompting the user to select the file to save to.
+          - A few minor UI changes
         draft: false
         prerelease: false
     - name: Download artifacts
@@ -108,6 +113,11 @@ jobs:
         asset_name: utm-link-editor-windows-amd64.exe
         asset_content_type: application/zip
     - name: Upload Linux Release Asset
+      id: upload-linux-release-asset  
+        asset_path: utm-link-editor-windows-amd64.exe/utm-link-editor-windows-amd64.exe
+        asset_name: utm-link-editor-windows-amd64-${{ steps.create_release.outputs.tag_name }}.exe
+        asset_content_type: application/zip
+    - name: Upload Linux Release Asset
       id: upload-linux-release-asset 
       uses: actions/upload-release-asset@v1
       env:
@@ -115,5 +125,5 @@ jobs:
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
         asset_path: utm-link-editor-linux-amd64/utm-link-editor-linux-amd64
-        asset_name: utm-link-editor-linux-amd64
+        asset_name: utm-link-editor-linux-amd64-${{ steps.create_release.outputs.tag_name }}
         asset_content_type: application/zip
