@@ -95,6 +95,8 @@ jobs:
       # with:
         # run-id: ${{ github.event.workflow_run.id }}
         # github-token: ${{ secrets.GITHUB_TOKEN }}
+    - name: List files
+      run: ls -R
     - name: Upload Windows Release Asset
       id: upload-windows-release-asset 
       uses: actions/upload-release-asset@v1
