@@ -8,9 +8,9 @@ def date_checker():
     current_month_day = datetime.today().strftime('%Y-%m')
 
     if current_month_day > '06-20':
-        current_academic_year = datetime.today().strftime('%Y') + '-' + str(int(datetime.today().strftime('%Y')) + 1)
+        current_academic_year = str(int(datetime.today().strftime('%Y')) - 1) + '-' + datetime.today().strftime('%Y')
     else:
-        current_academic_year = str(int(datetime.today().strftime('%Y')) + 1) + '-' + str(int(datetime.today().strftime('%Y')) + 2)
+        current_academic_year = datetime.today().strftime('%Y') + '-' + str(int(datetime.today().strftime('%Y')) + 1)
 
     return current_academic_year
 
