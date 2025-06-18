@@ -93,7 +93,7 @@ jobs:
     - name: Download artifacts
       uses: actions/download-artifact@v4
       with:
-        name: utm-link-editor-windows-amd64.exe
+        name: dist/utm-link-editor-windows-amd64.exe
         run-id: ${{ github.event.workflow_run.id }}
         github-token: ${{ secrets.GITHUB_TOKEN }}
     - name: Upload Windows Release Asset
