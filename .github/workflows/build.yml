@@ -39,7 +39,7 @@ jobs:
     - name: Upload executable
       uses: actions/upload-artifact@v4
       with:
-        name: utm-link-editor-windows-amd64
+        name: utm-link-editor-windows-amd64.exe
         path: dist/utm-link-editor-windows-amd64.exe
 
   build-linux:
@@ -90,6 +90,12 @@ jobs:
           Linux binary
         draft: false
         prerelease: false
+    - name: Download artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: utm-link-editor-windows-amd64.exe
+        run-id: ${{ github.event.workflow_run.id }}
+        github-token: ${{ secrets.GITHUB_TOKEN }}
     - name: Upload Windows Release Asset
       id: upload-windows-release-asset 
       uses: actions/upload-release-asset@v1
