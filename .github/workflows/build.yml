@@ -102,6 +102,12 @@ jobs:
         # github-token: ${{ secrets.GITHUB_TOKEN }}
     - name: List files
       run: ls -R
+    - name: Get Tag Name
+      id: get_tag_name
+      run: |
+        tag_name="${{ github.ref }}"
+        tag_name="${tag_name#refs/tags/}"
+        echo "TAG_NAME=${tag_name}" >> $GITHUB_ENV
     - name: Upload Windows Release Asset
       id: upload-windows-release-asset 
       uses: actions/upload-release-asset@v1
@@ -110,7 +116,7 @@ jobs:
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
         asset_path: utm-link-editor-windows-amd64.exe/utm-link-editor-windows-amd64.exe
-        asset_name: utm-link-editor-windows-amd64-${{ github.ref }}.exe
+        asset_name: utm-link-editor-windows-amd64-${{ env.TAG_NAME }}.exe
         asset_content_type: application/zip
     - name: Upload Linux Release Asset
       id: upload-linux-release-asset 
@@ -120,5 +126,5 @@ jobs:
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
         asset_path: utm-link-editor-linux-amd64/utm-link-editor-linux-amd64
-        asset_name: utm-link-editor-linux-amd64-${{ github.ref }}
+        asset_name: utm-link-editor-linux-amd64-${{ env.TAG_NAME }}
         asset_content_type: application/zip
