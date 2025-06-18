@@ -90,8 +90,11 @@ jobs:
           ## Changelog
           - New major version due to new UTM query string format/parameter ordering
             - New parameter ordering is "?utm_source=&utm_medium=&utm_campaign=&utm_content="
+            - The academic year has been removed from the utm_campaign parameter
           - Linux executable is now created as part of the CI/CD process
           - Saving a file is now automatic. The file is "overwritten" with the changed URLs rather than prompting the user to select the file to save to.
+          - The CSV tracking file has been updated to reflect the new UTM query string structure, and now includes a "Date Created" column to track when links were generated.
+            - The program will automatically generate a new CSV file if it is being run after June 20 of each year to reflect the new academic year.
           - A few minor UI changes
         draft: false
         prerelease: false
