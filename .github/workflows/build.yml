@@ -84,8 +84,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
       with:
-        tag_name: v1.2.4
-        release_name: Release v1.2.4
+        tag_name: v1.3.1
+        release_name: Release v1.3.1
         body: |
           Linux binary
         draft: false
@@ -104,7 +104,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: utm-link-editor-windows-amd64-1.2.4.exe/utm-link-editor-windows-amd64.exe
+        asset_path: utm-link-editor-windows-amd64.exe/utm-link-editor-windows-amd64.exe
         asset_name: utm-link-editor-windows-amd64.exe
         asset_content_type: application/zip
     - name: Upload Linux Release Asset
