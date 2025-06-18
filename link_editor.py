@@ -2,6 +2,7 @@
 # Licensed with the GNU General Public License version 3 I guess
 
 #importing libraries
+from datetime import datetime
 import os
 import re
 import tkinter as tk
@@ -106,17 +107,17 @@ def main():
                 save_file.write(final_body_html)
 
     # write the UTM parameters and links to a CSV file
-    if os.path.isfile("./2024-2025_EMC_HTML_UTM_links.csv") == True:
-        with open('2024-2025_EMC_HTML_UTM_links.csv', 'a', newline='') as file:
+    if os.path.isfile("./" + date_checker() + "_EMC_HTML_UTM_links.csv") == True:
+        with open(date_checker() + '_EMC_HTML_UTM_links.csv', 'a', newline='') as file:
             writer = csv.writer(file)
             for i in range(len(final_replace_links)):
-                writer.writerow([utm_unit, utm_campaign, final_replace_links[i], utm_source, 'email', final_utm_content_list[i], final_utm_links[i]])
+                writer.writerow([final_replace_links[i], utm_unit + '-' + utm_source, 'email', utm_campaign, final_utm_content_list[i], final_utm_links[i], datetime.today().strftime('%Y-%m-%d')])
     else:
-        with open('2024-2025_EMC_HTML_UTM_links.csv', 'w', newline='') as file:
+        with open(date_checker() + '_EMC_HTML_UTM_links.csv', 'w', newline='') as file:
             writer = csv.writer(file)
-            writer.writerow(["Unit", "Campaign", "URL", "Source", "Medium", "Content", "UTM Link"])
+            writer.writerow(["Base URL", "Source", "Medium", "Campaign", "Content", "UTM Link", "Date Created"])
             for i in range(len(final_replace_links)):
-                writer.writerow([utm_unit, utm_campaign, final_replace_links[i], utm_source, 'email', final_utm_content_list[i], final_utm_links[i]])
+                writer.writerow([final_replace_links[i], utm_unit + '-' + utm_source, 'email', utm_campaign, final_utm_content_list[i], final_utm_links[i], datetime.today().strftime('%Y-%m-%d')])
     
     # reset lists so that the program can be run again without restarting
     working_utm_links = []
@@ -161,7 +162,7 @@ select_button = tk.Button(root, text="Select HTML File", command=main)
 select_button.pack()
 
 # Display a message to guide the user
-message_label = tk.Label(root, text="Enter UTM parameters, select an HTML file, and then save over the file you chose.")
+message_label = tk.Label(root, text="Enter UTM parameters and then select an HTML file.\n\nBE CAREFUL: The selected HTML file will be overwritten and this cannot be undone.")
 message_label.pack()
 
 root.mainloop()

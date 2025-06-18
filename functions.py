@@ -1,5 +1,18 @@
 from bs4 import BeautifulSoup
+from datetime import datetime
 import re
+
+# uses June 20 as an arbitrary cutoff date to determine the current academic year
+def date_checker():
+
+    current_month_day = datetime.today().strftime('%Y-%m')
+
+    if current_month_day < '06-20':
+        current_academic_year = datetime.today().strftime('%Y') + '-' + str(int(datetime.today().strftime('%Y')) + 1)
+    else:
+        current_academic_year = str(int(datetime.today().strftime('%Y')) + 1) + '-' + str(int(datetime.today().strftime('%Y')) + 2)
+
+    return current_academic_year
 
 # duplicates content of content_grabber, but is currently used outside of that function to filter the list of original links so that the lengths of the original list of links and the updated list of links matches. Will be implemented into content_grabber in the future.
 def link_filter(links):
